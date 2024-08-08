@@ -25,13 +25,13 @@ public_users.get('/',async function (req, res)  {
 });
 
 // Get book details based on ISBN
-public_users.get('/isbn/:isbn',function (req, res) {
- let isbn = req.params.isbn;
+public_users.get('/isbn/:isbn',async function (req, res) {
+ let isbn = await req.params.isbn;
   let book = books[isbn];
   if(book){
-    return res.status(200).json(book);
+    return await res.status(200).json(book);
   }else{
-    return res.status(404).json({message: "Book not found"});
+    return await res.status(404).json({message: "Book not found"});
   }
 });
   
@@ -45,7 +45,7 @@ public_users.get('/author/:author',async function (req, res) {
     }
   }
   if(bookList.length > 0){
-    return res.status(200).json(bookList);
+    return await res.status(200).json(bookList);
   } else {
     return await res.status(404).json({message: "Author not found"});
   }
