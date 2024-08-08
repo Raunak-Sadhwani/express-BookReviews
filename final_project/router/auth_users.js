@@ -3,9 +3,7 @@ const jwt = require('jsonwebtoken');
 let books = require("./booksdb.js");
 const regd_users = express.Router();
 
-let users = [
-  {username: "Ron", password: "pass"},
-];
+let users = [];
 
 const isValid = (username)=>{ //returns boolean
  if (users.find(user => user.username == username)){
@@ -17,7 +15,8 @@ const isValid = (username)=>{ //returns boolean
 
 const authenticatedUser = (username,password)=>{ 
   if (isValid(username)){
-    if (users[username].password == password){
+    let user = users.find(user => user.username == username);
+    if (user.password == password){
       return true;
     }
   } 
@@ -29,9 +28,13 @@ const authenticatedUser = (username,password)=>{
 regd_users.post("/login", (req,res) => {
   let username = req.body.username;
   let password = req.body.password;
+  if (!username || !password){
+    return res.status(400).json({message: "Username and password required"});
+  }
   if (authenticatedUser(username,password)){
-    let token = jwt.sign({username: username}, "secret_key");
-    return res.status(200).json({token: token});
+    let token = jwt.sign({username: username}, "secret_keyx");
+    req.session.user = token;
+    return res.status(200).json({message: "Login successful", token: token});
   }
   return res.status(401).json({message: "Invalid credentials"});
 });
