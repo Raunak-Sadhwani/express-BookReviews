@@ -21,7 +21,7 @@ public_users.post("/register", (req,res) => {
 // Get the book list available in the shop
 public_users.get('/',async function (req, res)  {
   let bookList = await books;
-  return res.status(200).json(bookList);
+  return await res.status(200).json(bookList);
 });
 
 // Get book details based on ISBN
@@ -36,8 +36,8 @@ public_users.get('/isbn/:isbn',function (req, res) {
 });
   
 // Get book details based on author
-public_users.get('/author/:author',function (req, res) {
-  let author = req.params.author;
+public_users.get('/author/:author',async function (req, res) {
+  let author = await req.params.author;
   let bookList = [];
   for(let i in books){
     if(books[i].author == author){
@@ -47,7 +47,7 @@ public_users.get('/author/:author',function (req, res) {
   if(bookList.length > 0){
     return res.status(200).json(bookList);
   } else {
-    return res.status(404).json({message: "Author not found"});
+    return await res.status(404).json({message: "Author not found"});
   }
 });
 
