@@ -19,8 +19,8 @@ public_users.post("/register", (req,res) => {
 });
 
 // Get the book list available in the shop
-public_users.get('/',function (req, res) {
-  let bookList = books;
+public_users.get('/',async function (req, res)  {
+  let bookList = await books;
   return res.status(200).json(bookList);
 });
 

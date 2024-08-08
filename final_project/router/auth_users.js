@@ -68,6 +68,9 @@ regd_users.delete("/auth/review/:isbn", (req, res) => {
       return res.status(401).json({message: "Unauthorized access"});
     }
     if (books[isbn]){
+      if (!books[isbn].reviews[user.username]){
+        return res.status(404).json({message: "Review not found"});
+      }
       delete books[isbn].reviews[user.username]; 
       return res.status(200).json({message: "Review deleted"});
     }else{
